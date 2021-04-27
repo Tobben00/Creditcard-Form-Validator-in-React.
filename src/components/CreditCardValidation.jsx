@@ -46,7 +46,7 @@ function CreditCardValidation() {
     }
 
     function regexForLettersOnly(letter) {
-      return /^[A-Za-z]+$/.test(letter);
+      return /^[a-zA-Z ]+$/.test(letter);
     } 
 
     function validateCardNumber(e) {
@@ -61,8 +61,7 @@ function CreditCardValidation() {
         setIsError({cardNumber: "false"});
       }
       if(test === "4") {
-        setValue({...value, cardType: "visa"});
-        console.log(value);
+        setValue({...value, cardType: "Visa"});
       }
       
       if(regexForNumbersOnly(e.target.value) === false){
@@ -74,14 +73,13 @@ function CreditCardValidation() {
     }
 
     function validateCardHolderName(e) {
-      const lengthHolderName = value.cardHolderName.length;
+      const lengthHolderName = value.cardHolderName.replace(/\s+/," ").length + 1;
      
-      if(lengthHolderName <= 5){
+      console.log(regexForLettersOnly(value.cardHolderName.replace(/\s+/," ")))
+      if(lengthHolderName < 5 || !regexForLettersOnly(value.cardHolderName.replace(/\s+/," "))){
         setIsError({cardHolderName: "true"});
-      }
-      if(lengthHolderName >= 5){
-        setIsError({cardHolderName: "false"});
-      }
+      } else setIsError({cardHolderName: "false"});
+
       setValue({...value, cardHolderName: e.target.value});
       console.log(lengthHolderName)
     }
@@ -107,7 +105,7 @@ function CreditCardValidation() {
         return
       }  
 
-      if(!regexForLettersOnly(value.cardHolderName)) {
+      if(!regexForLettersOnly(value.cardHolderName.replace(/\s+/," "))) {
         alert("Card owner name do only contain letters and cannot be empty!");
         return
       }
